@@ -1,7 +1,3 @@
-# gestor_carreras.py
-
-carreras = ['Mates', 'Català', 'Historia', 'Economia']
-
 def mostrar_menu():
     print("\n--- MENÚ GESTOR DE CARRERAS ---")
     print("1. Añadir carrera")
@@ -10,22 +6,39 @@ def mostrar_menu():
     print("4. Borrar carrera")
     print("5. Salir")
 
-
 def añadir_carrera():
     nombre = input("Introduce el nombre de la carrera: ")
-    carreras.append(nombre)
-    print(f"'Carrera' {nombre} ' añadida con éxito'")
-
+    sql = "INSERT INTO carreras (nombre) VALUES (%s)"
+    cursor.execute(sql, (nombre,))
+    conexion.commit()
+    print("Carrera añadida.")
 
 def actualizar_carrera():
-    print(f"{carreras}")
-    carreraDelete = input("Que carrera desea Actualizar? : ")
-    
+    ver_carreras()
+    id_carrera = input("Introduce el ID de la carrera a actualizar: ")
+    nuevo_nombre = input("Nuevo nombre: ")
+    sql = "UPDATE carreras SET nombre = %s WHERE id = %s"
+    cursor.execute(sql, (nuevo_nombre, id_carrera))
+    conexion.commit()
+    print("Carrera actualizada.")
 
+def ver_carreras():
+    cursor.execute("SELECT * FROM carreras")
+    resultados = cursor.fetchall()
+    if not resultados:
+        print("No hay carreras registradas.")
+    else:
+        print("\n--- LISTA DE CARRERAS ---")
+        for fila in resultados:
+            print(f"ID: {fila[0]} | Nombre: {fila[1]}")
 
-
-
-
+def borrar_carrera():
+    ver_carreras()
+    id_carrera = input("Introduce el ID de la carrera a borrar: ")
+    sql = "DELETE FROM carreras WHERE id = %s"
+    cursor.execute(sql, (id_carrera,))
+    conexion.commit()
+    print("Carrera borrada.")
 
 # Programa principal
 while True:
@@ -34,8 +47,18 @@ while True:
 
     if opcion == "1":
         añadir_carrera()
-
-    if opcion == "2":
+    elif opcion == "2":
         actualizar_carrera()
+    elif opcion == "3":
+        ver_carreras()
+    elif opcion == "4":
+        borrar_carrera()
+    elif opcion == "5":
+        print("Saliendo del programa...")
+        break
     else:
         print("Opción no válida.")
+
+# Cerrar conexión
+cursor.close()
+conexion.close()
