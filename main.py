@@ -30,17 +30,17 @@ def añadir_carrera(cursor):
     input("press any key to continue.....")
 
 
+
 def actualizar_carrera(cursor):
     id_carrera = input("Introduce el ID de la carrera a actualizar: ")
     nombre_carrera = input("Introduce el nuevo nombre de la carrera: ")
-    resutlrados = dao.modificar_carrera(cursor,nombre_carrera,id_carrera)
+    modificar_carrera = c.carrera(nombre_carrera,id_carrera)
+    resultados = dao.modificar_carrera(cursor,modificar_carrera.getter(),modificar_carrera.getter_id())
     conexion.commit()
     if id_carrera in [str(i.getter_id()) for i in carreras]:  
-        for i in carreras:
-            if i.getter_id() == id_carrera:
-                i.setter(nombre_carrera)
-    for i in resutlrados:
-        print(f"\nLa carrera {NEGRITA}{i[0]}{RESET} se ha modificado a {NEGRITA}{nombre_carrera}{RESET}.\n")
+        
+        for i in resultados:
+            print(f"\nLa carrera {NEGRITA}{i[0]}{RESET} se ha modificado a {NEGRITA}{nombre_carrera}{RESET}.\n")
     else:
         print("\nCarrera no encontrada.\n")
     input("press any key to continue.....")
@@ -55,6 +55,8 @@ def ver_carreras(cursor):
         print("\n--- LISTA DE CARRERAS ---")
         for (id_Carrera,Nombre_Carrera) in resultados:
             carreras.append(c.carrera(Nombre_Carrera,id_Carrera))
+    input("press any key to continue.....")
+
 
 def borrar_carrera(cursor):
     id_carrera = input("Introduce el ID de la carrera a borrar: ")
@@ -92,8 +94,6 @@ while start_program:
         ver_carreras(cursor)
         for i in carreras:
             print(i)
-        input("press any key to continue.....")
-
     elif opcion == "4":
         borrar_carrera(cursor)
     elif opcion == "5":
