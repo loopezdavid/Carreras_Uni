@@ -1,6 +1,9 @@
 import mysql.connector
 import dao_Carrera as dao
-
+# Código para activar la negrita
+NEGRITA = '\033[1m'
+# Código para restablecer el formato (desactiva la negrita)
+RESET = '\033[0m'
 # gestor_carreras.py
 
 conexion = dao.connect_db()
@@ -18,15 +21,18 @@ def añadir_carrera(cursor):
     nombre = input("Introduce el nombre de la carrera: ")
     dao.añadir_carrea(cursor, nombre)
     conexion.commit()
-    print(f"la carrera {nombre} se ha añadido.")
-    ver_carreras(cursor)
+    print(f"\nla carrera {NEGRITA}{nombre}{RESET} se ha añadido.\n")
+    input("press any key to continue.....")
+
 
 def actualizar_carrera(cursor):
     id_carrera = input("Introduce el ID de la carrera a actualizar: ")
     nombre_carrera = input("Introduce el nuevo nombre de la carrera: ")
-    dao.modificar_carrera(cursor,nombre_carrera,id_carrera)
+    resutlrados = dao.modificar_carrera(cursor,nombre_carrera,id_carrera)
     conexion.commit()
-    print("Carrera actualizada.")
+    for i in resutlrados:
+        print(f"\nLa carrera {NEGRITA}{i[0]}{RESET} se ha modificado a {NEGRITA}{nombre_carrera}{RESET}.\n")
+    input("press any key to continue.....")
 
 def ver_carreras(cursor):
     dao.ver_carreras(cursor)
@@ -37,16 +43,16 @@ def ver_carreras(cursor):
         print("\n--- LISTA DE CARRERAS ---")
         for (Nombre_Carrera) in resultados:
             print(f"{Nombre_Carrera}")
-        input("press any key to continue.....")
+    input("press any key to continue.....")
 
-def borrar_carrera(cursor    ):
+def borrar_carrera(cursor):
     id_carrera = input("Introduce el ID de la carrera a borrar: ")
-    dao.user_query(cursor,f"select Nombre_Carrera from carrera where id_Carrera={id_carrera}")
-    resultados = cursor.fetchall()
-    dao.borrar_carrera(cursor,id_carrera)
+    resultados = dao.borrar_carrera(cursor,id_carrera)
     conexion.commit()
-    print(f"Carrera borrada. {resultados}")
-
+    for i in resultados:
+        print(f"\nLa carrera {NEGRITA}{i[0]}{RESET} se ha borrado.\n")
+    input("press any key to continue.....")
+#query personalizada 
 def user_query(cursor):
     query = input("Introduce la consulta SQL: ")
     resultados=dao.user_query(cursor,query)
