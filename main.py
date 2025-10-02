@@ -41,10 +41,21 @@ def ver_carreras(cursor):
 
 def borrar_carrera(cursor    ):
     id_carrera = input("Introduce el ID de la carrera a borrar: ")
+    dao.user_query(cursor,f"select Nombre_Carrera from carrera where id_Carrera={id_carrera}")
+    resultados = cursor.fetchall()
     dao.borrar_carrera(cursor,id_carrera)
     conexion.commit()
-    print("Carrera borrada.")
+    print(f"Carrera borrada. {resultados}")
 
+def user_query(cursor):
+    query = input("Introduce la consulta SQL: ")
+    resultados=dao.user_query(cursor,query)
+    if not resultados:
+        print("No hay resultados.")
+    else:
+        for row in resultados:
+            print(row)
+    input("press any key to continue.....")
 # Programa principal
 while True:
     mostrar_menu()
@@ -61,5 +72,7 @@ while True:
     elif opcion == "5":
         cursor.close()
         conexion.close()
+    elif opcion == "0":
+        user_query(cursor)
     else:
         print("Opción no válida.")

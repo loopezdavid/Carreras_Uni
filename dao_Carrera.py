@@ -11,9 +11,17 @@ def connect_db():
     return cnx
 
 # Get a cursor
+def user_query(cur,query):
+    try:
+        cur.execute(query)
+        return cur.fetchall()
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return None    
+
 def añadir_carrea(cur,nombre_carrera):
     try:
-        cur.execute(f"insert into carrera (`Nombre_Carrera`) alues ('{nombre_carrera}')")
+        cur.execute(f"insert into carrera (`Nombre_Carrera`) values ('{nombre_carrera}')")
     except:
         print("Error al insertar la carrera")
 def modificar_carrera(cur,nombre_carrera,id_carrera):
