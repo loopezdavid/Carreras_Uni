@@ -10,8 +10,6 @@ def connect_db():
         database="carreras")
     return cnx
 
-
-
 # Get a cursor
 def user_query(cur,query):
     try:
@@ -19,38 +17,38 @@ def user_query(cur,query):
         return cur.fetchall()
     except mysql.connector.Error as err:
         print(f"Error: {err}")
-        return None    
 ####.execute("INSERT INTO table VALUES(%s,%s)", (int(id), string))
 
-def añadir_carrea(cur,nombre_carrera):
+def añadir_carrera(cur,nombre_carrera):
     try:
-        cur.execute("insert into carrera (`Nombre_Carrera`) values (%s)", (nombre_carrera,))
-    except:
-        print("Error al insertar la carrera")
+        cur.execute("INSERT INTO carrera (Nombre_Carrera) VALUES (%s)", (nombre_carrera,))
+    except mysql.connector.Error as err:
+        print("Error al insertar la carrera:", err)
+        
         
 def modificar_carrera(cursor,nombre_carrera,id_carrera):
     try:
-        cursor.execute("select Nombre_Carrera from carrera where id_Carrera = %s", (id_carrera,))
+        cursor.execute("SELECT Nombre_Carrera FROM carrera where id_Carrera = %s", (id_carrera,))
         resultados = cursor.fetchall()
-        cursor.execute("update carrera set Nombre_Carrera= %s where id_Carrera = %s", (nombre_carrera,id_carrera,))
+        cursor.execute("UPDATE carrera SET Nombre_Carrera= %s WHERE id_Carrera = %s", (nombre_carrera,id_carrera,))
         return resultados
-    except:
-        print("Error al modificar la carrera") 
+    except mysql.connector.Error as err:
+        print("Error al modificar la carrera :", err) 
          
 def ver_carreras(cur):
     try:
-        cur.execute("select * from carrera")
+        cur.execute("SELECT * FROM carrera")
         return cur.fetchall()
         
-    except:
-        print("Error al ver las carreras")
+    except mysql.connector.Error as err:
+        print("Error al ver las carreras :", err)
         
 def borrar_carrera(cursor,id_carrera):
     try:         
-        cursor.execute("select Nombre_Carrera from carrera where id_Carrera = %s", (id_carrera,))
+        cursor.execute("SELECT Nombre_Carrera FROM carrera WHERE id_Carrera = %s", (id_carrera,))
         resultados = cursor.fetchall()
-        cursor.execute("delete from carrera where id_Carrera = %s", (id_carrera,))
+        cursor.execute("DELETE from carrera WHERE id_Carrera = %s", (id_carrera,))
         return resultados
-    except:
-        print("Error al borrar la carrera")  
+    except mysql.connector.Error as err:
+        print("Error al borrar la carrera: ",err)  
 
