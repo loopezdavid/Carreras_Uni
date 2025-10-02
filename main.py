@@ -21,12 +21,10 @@ def añadir_carrera(cursor):
     print(f"la carrera {nombre} se ha añadido.")
     ver_carreras(cursor)
 
-def actualizar_carrera():
-    ver_carreras()
+def actualizar_carrera(cursor):
     id_carrera = input("Introduce el ID de la carrera a actualizar: ")
-    nuevo_nombre = input("Nuevo nombre: ")
-    sql = "UPDATE carreras SET nombre = %s WHERE id = %s"
-    cursor.execute(sql, (nuevo_nombre, id_carrera))
+    nombre_carrera = input("Introduce el nuevo nombre de la carrera: ")
+    dao.modificar_carrera(cursor,nombre_carrera,id_carrera)
     conexion.commit()
     print("Carrera actualizada.")
 

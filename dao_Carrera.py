@@ -13,12 +13,12 @@ def connect_db():
 # Get a cursor
 def añadir_carrea(cur,nombre_carrera):
     try:
-        cur.execute(f"insert into carrera (`Nombre_Carrera`)values ('{nombre_carrera}')")
+        cur.execute(f"insert into carrera (`Nombre_Carrera`) alues ('{nombre_carrera}')")
     except:
         print("Error al insertar la carrera")
 def modificar_carrera(cur,nombre_carrera,id_carrera):
     try:
-        cur.execute(f"update carrera set Nombre_Carrera='{nombre_carrera}', where id_Carrera={id_carrera}")
+        cur.execute(f"update carrera set Nombre_Carrera='{nombre_carrera}' where id_Carrera={id_carrera}")
     except:
         print("Error al modificar la carrera")  
 def ver_carreras(cur):
