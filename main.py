@@ -1,5 +1,6 @@
-import mysql.connector
 import dao_Carrera as dao
+import os
+start_program = True
 # Código para activar la negrita
 NEGRITA = '\033[1m'
 # Código para restablecer el formato (desactiva la negrita)
@@ -49,8 +50,11 @@ def borrar_carrera(cursor):
     id_carrera = input("Introduce el ID de la carrera a borrar: ")
     resultados = dao.borrar_carrera(cursor,id_carrera)
     conexion.commit()
-    for i in resultados:
-        print(f"\nLa carrera {NEGRITA}{i[0]}{RESET} se ha borrado.\n")
+    if not resultados:
+        print("\nCarrera no encontrada.\n")
+    else:
+        for i in resultados:
+            print(f"\nLa carrera {NEGRITA}{i[0]}{RESET} se ha borrado.\n")
     input("press any key to continue.....")
 #query personalizada 
 def user_query(cursor):
@@ -63,7 +67,8 @@ def user_query(cursor):
             print(row)
     input("press any key to continue.....")
 # Programa principal
-while True:
+while start_program:
+    os.system('cls' if os.name == 'nt' else 'clear')
     mostrar_menu()
     opcion = input("Selecciona una opción: ")
 
@@ -78,6 +83,8 @@ while True:
     elif opcion == "5":
         cursor.close()
         conexion.close()
+        print("\nSaliendo del programa...\n")
+        start_program = False
     elif opcion == "0":
         user_query(cursor)
     else:
