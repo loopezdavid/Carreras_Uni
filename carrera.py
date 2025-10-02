@@ -12,5 +12,5 @@ class carrera:
     def getter_id(self):
        return self.__id_carrera
     def __str__(self):
-        return f"{self.__id_carrera} -> {self.__nombre_carrera}"
+        return f"[{self.__id_carrera}] -> {self.__nombre_carrera}"
 #end of file carrera.py
