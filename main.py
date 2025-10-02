@@ -1,6 +1,6 @@
 import dao_Carrera as dao
-import os
 import carrera as c
+import os
 
 carreras=[]
 start_program = True
@@ -12,6 +12,9 @@ RESET = '\033[0m'
 
 conexion = dao.connect_db()
 cursor = conexion.cursor()
+
+def pausa():
+    input("\nPresiona cualquier tecla para continuar...")
 
 def mostrar_menu():
     print("\n--- MENÚ GESTOR DE CARRERAS ---")
@@ -27,9 +30,7 @@ def añadir_carrera(cursor):
     dao.añadir_carrea(cursor, nueva_carrera.getter())
     conexion.commit()
     print(f"\nla carrera {NEGRITA}{nombre}{RESET} se ha añadido.\n")
-    input("press any key to continue.....")
-
-
+    pausa()
 
 def actualizar_carrera(cursor):
     id_carrera = input("Introduce el ID de la carrera a actualizar: ")
@@ -38,25 +39,22 @@ def actualizar_carrera(cursor):
     resultados = dao.modificar_carrera(cursor,modificar_carrera.getter(),modificar_carrera.getter_id())
     conexion.commit()
     if id_carrera in [str(i.getter_id()) for i in carreras]:  
-        
         for i in resultados:
             print(f"\nLa carrera {NEGRITA}{i[0]}{RESET} se ha modificado a {NEGRITA}{nombre_carrera}{RESET}.\n")
     else:
         print("\nCarrera no encontrada.\n")
-    input("press any key to continue.....")
+    pausa()
 
 def ver_carreras(cursor):
     del carreras[:]
-    dao.ver_carreras(cursor)
-    resultados = cursor.fetchall()
+    resultados = dao.ver_carreras(cursor)
+    
     if not resultados:
         print("No hay carreras registradas.")
     else:
         print("\n--- LISTA DE CARRERAS ---")
         for (id_Carrera,Nombre_Carrera) in resultados:
             carreras.append(c.carrera(Nombre_Carrera,id_Carrera))
-    input("press any key to continue.....")
-
 
 def borrar_carrera(cursor):
     id_carrera = input("Introduce el ID de la carrera a borrar: ")
@@ -68,7 +66,7 @@ def borrar_carrera(cursor):
     else:
         for i in resultados:
             print(f"\nLa carrera {NEGRITA}{i[0]}{RESET} se ha borrado.\n")
-    input("press any key to continue.....")
+    pausa()
     
 #query personalizada 
 def user_query(cursor):
@@ -79,7 +77,7 @@ def user_query(cursor):
     else:
         for row in resultados:
             print(row)
-    input("press any key to continue.....")
+    pausa()
 # Programa principal
 while start_program:
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -93,7 +91,8 @@ while start_program:
     elif opcion == "3":
         ver_carreras(cursor)
         for i in carreras:
-            print(i)
+            print(i)    
+        input("press any key to continue.....")
     elif opcion == "4":
         borrar_carrera(cursor)
     elif opcion == "5":
