@@ -14,12 +14,12 @@ def mostrar_menu():
     print("4. Borrar carrera")
     print("5. Salir")
 
-def añadir_carrera():
+def añadir_carrera(cursor):
     nombre = input("Introduce el nombre de la carrera: ")
-    sql = "INSERT INTO carreras (nombre) VALUES (%s)"
-    cursor.execute(sql, (nombre,))
+    dao.añadir_carrea(cursor, nombre)
     conexion.commit()
-    print("Carrera añadida.")
+    print(f"la carrera {nombre} se ha añadido.")
+    ver_carreras(cursor)
 
 def actualizar_carrera():
     ver_carreras()
@@ -41,11 +41,9 @@ def ver_carreras(cursor):
             print(f"{Nombre_Carrera}")
         input("press any key to continue.....")
 
-def borrar_carrera():
-    ver_carreras()
+def borrar_carrera(cursor    ):
     id_carrera = input("Introduce el ID de la carrera a borrar: ")
-    sql = "DELETE FROM carreras WHERE id = %s"
-    cursor.execute(sql, (id_carrera,))
+    dao.borrar_carrera(cursor,id_carrera)
     conexion.commit()
     print("Carrera borrada.")
 
@@ -61,9 +59,9 @@ while True:
     elif opcion == "3":
         ver_carreras(cursor)
     elif opcion == "4":
-        dao.borrar_carrera(cursor)
+        borrar_carrera(cursor)
     elif opcion == "5":
         cursor.close()
-        cnx.close()
+        conexion.close()
     else:
         print("Opción no válida.")
