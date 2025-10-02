@@ -1,5 +1,8 @@
 import dao_Carrera as dao
 import os
+import carrera as c
+
+carreras=[]
 start_program = True
 # Código para activar la negrita
 NEGRITA = '\033[1m'
@@ -20,7 +23,8 @@ def mostrar_menu():
 
 def añadir_carrera(cursor):
     nombre = input("Introduce el nombre de la carrera: ")
-    dao.añadir_carrea(cursor, nombre)
+    nueva_carrera = c.carrera(nombre)
+    dao.añadir_carrea(cursor, nueva_carrera.getter())
     conexion.commit()
     print(f"\nla carrera {NEGRITA}{nombre}{RESET} se ha añadido.\n")
     input("press any key to continue.....")
@@ -31,24 +35,31 @@ def actualizar_carrera(cursor):
     nombre_carrera = input("Introduce el nuevo nombre de la carrera: ")
     resutlrados = dao.modificar_carrera(cursor,nombre_carrera,id_carrera)
     conexion.commit()
+    if id_carrera in [str(i.getter_id()) for i in carreras]:  
+        for i in carreras:
+            if i.getter_id() == id_carrera:
+                i.setter(nombre_carrera)
     for i in resutlrados:
         print(f"\nLa carrera {NEGRITA}{i[0]}{RESET} se ha modificado a {NEGRITA}{nombre_carrera}{RESET}.\n")
+    else:
+        print("\nCarrera no encontrada.\n")
     input("press any key to continue.....")
 
 def ver_carreras(cursor):
+    del carreras[:]
     dao.ver_carreras(cursor)
     resultados = cursor.fetchall()
     if not resultados:
         print("No hay carreras registradas.")
     else:
         print("\n--- LISTA DE CARRERAS ---")
-        for (Nombre_Carrera) in resultados:
-            print(f"{Nombre_Carrera}")
-    input("press any key to continue.....")
+        for (id_Carrera,Nombre_Carrera) in resultados:
+            carreras.append(c.carrera(Nombre_Carrera,id_Carrera))
 
 def borrar_carrera(cursor):
     id_carrera = input("Introduce el ID de la carrera a borrar: ")
-    resultados = dao.borrar_carrera(cursor,id_carrera)
+    borrar_carrera = c.carrera("",id_carrera)
+    resultados = dao.borrar_carrera(cursor,borrar_carrera.getter_id())
     conexion.commit()
     if not resultados:
         print("\nCarrera no encontrada.\n")
@@ -56,6 +67,7 @@ def borrar_carrera(cursor):
         for i in resultados:
             print(f"\nLa carrera {NEGRITA}{i[0]}{RESET} se ha borrado.\n")
     input("press any key to continue.....")
+    
 #query personalizada 
 def user_query(cursor):
     query = input("Introduce la consulta SQL: ")
@@ -78,6 +90,10 @@ while start_program:
         actualizar_carrera(cursor)
     elif opcion == "3":
         ver_carreras(cursor)
+        for i in carreras:
+            print(i)
+        input("press any key to continue.....")
+
     elif opcion == "4":
         borrar_carrera(cursor)
     elif opcion == "5":
