@@ -1,6 +1,6 @@
 import mysql.connector
-cnx = None
-def connect_db(cnx):
+
+def connect_db():
     cnx = mysql.connector.connect(
         host="127.0.0.1",
         port=3306,
@@ -11,27 +11,24 @@ def connect_db(cnx):
     return cnx
 
 # Get a cursor
-cur = cnx.cursor()
-def añadir_carrea(nombre_carrera):
+def añadir_carrea(cur,nombre_carrera):
     try:
-        cur.execute("insert into carrera (Nombre_Carrera) values ('nombre_carrera')")
+        cur.execute(f"insert into carrera ({nombre_carrera}) values ('{nombre_carrera}')")
     except:
         print("Error al insertar la carrera")
-def modificar_carrera(nombre_carrera,id_carrera):
+def modificar_carrera(cur,nombre_carrera,id_carrera):
     try:
-        cur.execute("update carrera set Nombre_Carrera='{nombre_carrera}', where id_Carrera={id_carrera}")
+        cur.execute(f"update carrera set Nombre_Carrera='{nombre_carrera}', where id_Carrera={id_carrera}")
     except:
         print("Error al modificar la carrera")  
-def ver_carreras():
+def ver_carreras(cur):
     try:
-        cur.execute("select * from carrera")
+       return cur.execute(f"select * from carrera")
     except:
         print("Error al ver las carreras")
-def borrar_carrera(id_carrera):
+def borrar_carrera(cur,id_carrera):
     try:
-        cur.execute("delete from carrera where id_Carrera={id_carrera}")
+        cur.execute(f"delete from carrera where id_Carrera={id_carrera}")
     except:
         print("Error al borrar la carrera")  
 
-cur.close()
-cnx.close()

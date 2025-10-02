@@ -1,3 +1,11 @@
+import mysql.connector
+import dao_Carrera as dao
+
+# gestor_carreras.py
+
+conexion = dao.connect_db()
+cursor = conexion.cursor()
+
 def mostrar_menu():
     print("\n--- MENÚ GESTOR DE CARRERAS ---")
     print("1. Añadir carrera")
@@ -22,15 +30,16 @@ def actualizar_carrera():
     conexion.commit()
     print("Carrera actualizada.")
 
-def ver_carreras():
-    cursor.execute("SELECT * FROM carreras")
+def ver_carreras(cursor):
+    dao.ver_carreras(cursor)
     resultados = cursor.fetchall()
     if not resultados:
         print("No hay carreras registradas.")
     else:
         print("\n--- LISTA DE CARRERAS ---")
-        for fila in resultados:
-            print(f"ID: {fila[0]} | Nombre: {fila[1]}")
+        for (Nombre_Carrera) in resultados:
+            print(f"{Nombre_Carrera}")
+        input("press any key to continue.....")
 
 def borrar_carrera():
     ver_carreras()
@@ -46,19 +55,15 @@ while True:
     opcion = input("Selecciona una opción: ")
 
     if opcion == "1":
-        añadir_carrera()
+        añadir_carrera(cursor)
     elif opcion == "2":
-        actualizar_carrera()
+        actualizar_carrera(cursor)
     elif opcion == "3":
-        ver_carreras()
+        ver_carreras(cursor)
     elif opcion == "4":
-        borrar_carrera()
+        dao.borrar_carrera(cursor)
     elif opcion == "5":
-        print("Saliendo del programa...")
-        break
+        cursor.close()
+        cnx.close()
     else:
         print("Opción no válida.")
-
-# Cerrar conexión
-cursor.close()
-conexion.close()
