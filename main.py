@@ -27,7 +27,7 @@ def mostrar_menu():
 def añadir_carrera(cursor):
     nombre = input("Introduce el nombre de la carrera: ")
     nueva_carrera = c.carrera(nombre)
-    dao.añadir_carrea(cursor, nueva_carrera.getter())
+    dao.añadir_carrera(cursor, nueva_carrera.getter())
     conexion.commit()
     print(f"\nla carrera {NEGRITA}{nombre}{RESET} se ha añadido.\n")
     pausa()
