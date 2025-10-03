@@ -25,11 +25,6 @@ def mostrar_menu():
     print("5. Salir")
 
 def añadir_carrera(cursor):
-    '''        self.__id_carrera = id_carrera
-        self.__nombre_carrera = nombre_carrera
-        self.__nota_corte = nota_corte
-        self.__duracion = duracion
-        '''
     nombre = input("Introduce el nombre de la carrera: ")
     duracion = input("Introduce la duración de la carrera (en años): ") 
     try:
@@ -53,8 +48,10 @@ def añadir_carrera(cursor):
 def actualizar_carrera(cursor):
     id_carrera = input("Introduce el ID de la carrera a actualizar: ")
     nombre_carrera = input("Introduce el nuevo nombre de la carrera: ")
-    modificar_carrera = c.carrera(nombre_carrera,id_carrera)
-    resultados = dao.modificar_carrera(cursor,modificar_carrera.getter(),modificar_carrera.getter_id())
+    notaDeCorte = input("Introduce la nueva nota de corte de la carrera: ")
+    duracion = input("Introduce la nueva duración de la carrera (en años): ")
+    modificar_carrera = c.carrera(nombre_carrera,id_carrera,notaDeCorte,duracion)
+    resultados = dao.modificar_carrera(cursor,modificar_carrera.getter_id(),modificar_carrera.getter(),modificar_carrera.get_nota_corte(),modificar_carrera.get_duracion())
     conexion.commit()
     if id_carrera in [str(i.getter_id()) for i in carreras]:  
         for i in resultados:
