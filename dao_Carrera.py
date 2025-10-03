@@ -19,9 +19,9 @@ def user_query(cur,query):
         print(f"Error: {err}")
 ####.execute("INSERT INTO table VALUES(%s,%s)", (int(id), string))
 
-def añadir_carrera(cur,nombre_carrera):
+def añadir_carrera(cur,nombre_carrera,nota_corte,duracion):
     try:
-        cur.execute("INSERT INTO carrera (Nombre_Carrera) VALUES (%s)", (nombre_carrera,))
+        cur.execute("INSERT INTO carrera (Nombre_Carrera,Nota_de_corte,Duracion) VALUES (%s,%s,%s)", (nombre_carrera,nota_corte,duracion,))
     except mysql.connector.Error as err:
         print("Error al insertar la carrera:", err)
         
@@ -39,7 +39,6 @@ def ver_carreras(cur):
     try:
         cur.execute("SELECT * FROM carrera")
         return cur.fetchall()
-        
     except mysql.connector.Error as err:
         print("Error al ver las carreras :", err)
         
