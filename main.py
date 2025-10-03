@@ -1,9 +1,9 @@
 import dao_Carrera as dao
 import carrera as c
 import os
-
+import mysql.connector
 carreras=[]
-start_program = True
+start_program = False
 # Código para activar la negrita
 NEGRITA = '\033[1m'
 # Código para restablecer el formato (desactiva la negrita)
@@ -11,7 +11,13 @@ RESET = '\033[0m'
 # gestor_carreras.py
 
 conexion = dao.connect_db()
-cursor = conexion.cursor()
+
+if isinstance(conexion, mysql.connector.Error):
+    print(f"--- Error: {conexion.msg}")            # Mensaje de error
+else:
+    print("---Conexión establecida---")
+    start_program = True
+    cursor = conexion.cursor()
 
 def pausa():
     input("\nPresiona cualquier tecla para continuar...")
