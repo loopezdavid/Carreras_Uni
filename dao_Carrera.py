@@ -23,17 +23,26 @@ def añadir_carrera(cur,nombre_carrera,nota_corte,duracion):
     try:
         cur.execute("INSERT INTO carrera (Nombre_Carrera,Nota_de_corte,Duracion) VALUES (%s,%s,%s)", (nombre_carrera,nota_corte,duracion,))
     except mysql.connector.Error as err:
-        print("Error al insertar la carrera:", err)
+        print("Error al insertar la carrera (añadir_carrera):", err)
         
-        
-def modificar_carrera(cursor,nombre_carrera,id_carrera):
+def añadir_carrera_id(cur,id_carrera,nombre_carrera,notadeCorte,duracion):
     try:
-        cursor.execute("SELECT Nombre_Carrera FROM carrera where id_Carrera = %s", (id_carrera,))
+        cur.execute("INSERT INTO carrera (id_Carrera,Nombre_Carrera,Nota_de_corte,Duracion) VALUES (%s,%s,%s,%s) ", (id_carrera,nombre_carrera,notadeCorte,duracion,))
+    except mysql.connector.Error as err:
+        print("Error al insertar la carrera (añadir_carrera_id): ", err)
+        
+def modificar_carrera(cursor,id_carrera,nombre_carrera,notadeCorte,duracion):
+    try:
+        borrar_carrera(cursor,id_carrera)
+    except:
+        pass
+    try:
+        añadir_carrera_id(cursor,id_carrera,nombre_carrera,notadeCorte,duracion)
+        #cursor.execute("SELECT Nombre_Carrera FROM carrera where id_Carrera = %s", (id_carrera,))
         resultados = cursor.fetchall()
-        cursor.execute("UPDATE carrera SET Nombre_Carrera= %s WHERE id_Carrera = %s", (nombre_carrera,id_carrera,))
         return resultados
     except mysql.connector.Error as err:
-        print("Error al modificar la carrera :", err) 
+        print("Error al modificar la carrera en (modificar_carrera) :", err) 
          
 def ver_carreras(cur):
     try:
