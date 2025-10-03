@@ -1,13 +1,12 @@
 import mysql.connector
 
-def connect_db():
+def connect_db(user,passwd):
     try:
         cnx = mysql.connector.connect(
             host="127.0.0.1",
             port=3306,
-            user=input("input user name: "),
-            #password="Bootcamp123"
-            password=input("input your password: "),
+            user= user,
+            password= passwd,
             database="carreras")
         return cnx
     except mysql.connector.Error as err:
