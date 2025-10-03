@@ -9,9 +9,13 @@ NEGRITA = '\033[1m'
 # Código para restablecer el formato (desactiva la negrita)
 RESET = '\033[0m'
 # gestor_carreras.py
-
-conexion = dao.connect_db()
-
+conexion = None
+def connect_db():
+    user = input("input user name: ")
+    passwd = input("input your password: ") 
+    cnx = dao.connect_db(user, passwd)
+    return cnx
+conexion = connect_db()
 if isinstance(conexion, mysql.connector.Error):
     print(f"--- Error: {conexion.msg}")            # Mensaje de error
 else:
