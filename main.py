@@ -25,11 +25,29 @@ def mostrar_menu():
     print("5. Salir")
 
 def añadir_carrera(cursor):
+    '''        self.__id_carrera = id_carrera
+        self.__nombre_carrera = nombre_carrera
+        self.__nota_corte = nota_corte
+        self.__duracion = duracion
+        '''
     nombre = input("Introduce el nombre de la carrera: ")
-    nueva_carrera = c.carrera(nombre)
-    dao.añadir_carrera(cursor, nueva_carrera.getter())
-    conexion.commit()
-    print(f"\nla carrera {NEGRITA}{nombre}{RESET} se ha añadido.\n")
+    duracion = input("Introduce la duración de la carrera (en años): ") 
+    try:
+        nota_corte = float(input("Introduce la nota de corte de la carrera: "))
+    except ValueError:
+        print("la nota de corte debe ser un número.")
+        try:
+            nota_corte = float(input("Introduce la nota de corte de la carrera: "))
+        except ValueError:
+            print("la nota de corte debe ser un número.")
+            return
+    if nota_corte < 0 or nota_corte > 14:
+        print("la nota de corte debe estar entre 0 y 14.")
+    else:
+        nueva_carrera = c.carrera(nombre,"",nota_corte,duracion)
+        dao.añadir_carrera(cursor, nueva_carrera.getter(),nueva_carrera.get_nota_corte(),nueva_carrera.get_duracion())
+        conexion.commit()
+        print(f"\nla carrera {NEGRITA}{nombre}{RESET} se ha añadido.\n")
     pausa()
 
 def actualizar_carrera(cursor):
@@ -48,13 +66,12 @@ def actualizar_carrera(cursor):
 def ver_carreras(cursor):
     del carreras[:]
     resultados = dao.ver_carreras(cursor)
-    
     if not resultados:
         print("No hay carreras registradas.")
     else:
         print("\n--- LISTA DE CARRERAS ---")
-        for (id_Carrera,Nombre_Carrera) in resultados:
-            carreras.append(c.carrera(Nombre_Carrera,id_Carrera))
+        for (id_Carrera,Nombre_Carrera,nota_corte,duracion) in resultados:
+            carreras.append(c.carrera(Nombre_Carrera,id_Carrera,duracion,nota_corte))
 
 def borrar_carrera(cursor):
     id_carrera = input("Introduce el ID de la carrera a borrar: ")
