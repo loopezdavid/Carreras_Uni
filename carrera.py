@@ -1,8 +1,19 @@
 class carrera:
-    def __init__(self, nombre_carrera ,id_carrera=""):
+    def __init__(self, nombre_carrera ,id_carrera="", nota_corte="", duracion=""):
         self.__id_carrera = id_carrera
         self.__nombre_carrera = nombre_carrera
+        self.__nota_corte = nota_corte
+        self.__duracion = duracion
 #getter and setter
+    def get_nota_corte(self):
+        return self.__nota_corte
+    def set_nota_corte(self, nueva_nota):
+        self.__nota_corte = nueva_nota
+    def get_duracion(self):
+        return self.__duracion
+    def set_duracion(self, nueva_duracion):
+        self.__duracion = nueva_duracion
+
     def getter(self):
         return self.__nombre_carrera
    
@@ -12,5 +23,5 @@ class carrera:
     def getter_id(self):
        return self.__id_carrera
     def __str__(self):
-        return f"[{self.__id_carrera}] -> {self.__nombre_carrera}"
+        return f"[{self.__id_carrera}] -> {self.__nombre_carrera} - Nota de corte: {self.__nota_corte} - Duración: {self.__duracion} años"
 #end of file carrera.py
