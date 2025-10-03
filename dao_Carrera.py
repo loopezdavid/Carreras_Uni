@@ -1,14 +1,20 @@
 import mysql.connector
 
 def connect_db():
-    cnx = mysql.connector.connect(
-        host="127.0.0.1",
-        port=3306,
-        user="root",
-        #password="Bootcamp123"
-        password="12345678",
-        database="carreras")
-    return cnx
+    try:
+        cnx = mysql.connector.connect(
+            host="127.0.0.1",
+            port=3306,
+            user=input("input user name: "),
+            #password="Bootcamp123"
+            password=input("input your password: "),
+            database="carreras")
+        return cnx
+    except mysql.connector.Error as err:
+        return err
+
+
+
 
 # Get a cursor
 def user_query(cur,query):
