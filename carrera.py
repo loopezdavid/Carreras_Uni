@@ -28,5 +28,8 @@ class carrera:
     def getter_id(self):
         return self.__id_carrera
     def __str__(self):
-        return f"[{self.__id_carrera}] -> {self.__nombre_carrera} - Nota de corte: {self.__nota_corte} - Duración: {self.__duracion} años"
+        if  1 ==  len(str(self.__id_carrera)):
+            return f"[{self.__id_carrera}]  -> {self.__nombre_carrera} - Nota de corte: {self.__nota_corte} - Duración: {self.__duracion} años"
+        elif 2 == len(str(self.__id_carrera)):
+            return f"[{self.__id_carrera}] -> {self.__nombre_carrera} - Nota de corte: {self.__nota_corte} - Duración: {self.__duracion} años"
 #end of file carrera.py
