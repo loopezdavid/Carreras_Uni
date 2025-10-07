@@ -12,17 +12,12 @@ def connect_db(user,passwd):
     except mysql.connector.Error as err:
         return err
 
-
-
-
-# Get a cursor
 def user_query(cur,query):
     try:
         cur.execute(query)
         return cur.fetchall()
     except mysql.connector.Error as err:
         print(f"Error: {err}")
-####.execute("INSERT INTO table VALUES(%s,%s)", (int(id), string))
 
 def añadir_carrera(cur,nombre_carrera,nota_corte,duracion):
     try:
@@ -43,7 +38,6 @@ def modificar_carrera(cursor,id_carrera,nombre_carrera,notadeCorte,duracion):
         pass
     try:
         añadir_carrera_id(cursor,id_carrera,nombre_carrera,notadeCorte,duracion)
-        #cursor.execute("SELECT Nombre_Carrera FROM carrera where id_Carrera = %s", (id_carrera,))
         resultados = cursor.fetchall()
         return resultados
     except mysql.connector.Error as err:
@@ -64,4 +58,3 @@ def borrar_carrera(cursor,id_carrera):
         return resultados
     except mysql.connector.Error as err:
         print("Error al borrar la carrera: ",err)  
-
