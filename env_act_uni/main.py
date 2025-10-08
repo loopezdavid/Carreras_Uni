@@ -53,7 +53,7 @@ def añadir_carrera(cursor):
         print("la nota de corte debe estar entre 0 y 14.")
     else:
         nueva_carrera = c.carrera(nombre,"",nota_corte,duracion)
-        dao.añadir_carrera(cursor, nueva_carrera.getter(),nueva_carrera.get_nota_corte(),nueva_carrera.get_duracion())
+        dao.añadir_carrera(cursor,nueva_carrera)
         conexion.commit()
         print(f"\nla carrera {NEGRITA}{nombre}{RESET} se ha añadido.\n")
     pausa()
@@ -67,7 +67,7 @@ def actualizar_carrera(cursor,tabla ):
     notaDeCorte = input("Introduce la nueva nota de corte de la carrera: ")
     duracion = input("Introduce la nueva duración de la carrera (en años): ")
     modificar_carrera = c.carrera(nombre_carrera,id_carrera,notaDeCorte,duracion)
-    resultados = dao.modificar_carrera(cursor,modificar_carrera.getter_id(),modificar_carrera.getter(),modificar_carrera.get_nota_corte(),modificar_carrera.get_duracion())
+    resultados = dao.modificar_carrera(cursor,modificar_carrera)
     conexion.commit()
     
     if id_carrera in [str(i.getter_id()) for i in carreras]:  
