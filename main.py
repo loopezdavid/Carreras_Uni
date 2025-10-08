@@ -1,6 +1,7 @@
 import dao_Carrera as dao
 import carrera as c
 import os
+import requests as req
 import mysql.connector
 carreras=[]
 start_program = False
@@ -113,7 +114,7 @@ while start_program:
     elif opcion == "2":
         actualizar_carrera(cursor)
     elif opcion == "3":
-        ver_carreras(cursor)
+        listar_carreras = req.get("http://127.0.0.1:5000//ver/carreras")
         for i in carreras:
             print(i)    
         input("press any key to continue.....")
