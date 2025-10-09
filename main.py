@@ -22,25 +22,33 @@ def mostrar_menu():
     print("4. Borrar carrera")
     print("5. Salir")
 
-def añadir_carrera(cursor):
+def añadir_carrera(cursor=None):
     nombre = input("Introduce el nombre de la carrera: ")
     duracion = input("Introduce la duración de la carrera (en años): ") 
     try:
         nota_corte = float(input("Introduce la nota de corte de la carrera: "))
     except ValueError:
-        print("la nota de corte debe ser un número.")
-        try:
-            nota_corte = float(input("Introduce la nota de corte de la carrera: "))
-        except ValueError:
-            print("la nota de corte debe ser un número.")
-            return
+        print("La nota de corte debe ser un número.")
+        pausa()
+        return
+
     if nota_corte < 0 or nota_corte > 14:
-        print("la nota de corte debe estar entre 0 y 14.")
+        print("La nota de corte debe estar entre 0 y 14.")
+        pausa()
+        return
+
+    import requests as req
+    url = "http://localhost:5000/agregar/carrera/"
+    payload = {"nombre": nombre, "duracion": duracion, "nota_corte": nota_corte}
+    response = req.post(url, json=payload)
+
+    if response.status_code == 201:
+        print(f"\n✅ Carrera '{nombre}' añadida correctamente.\n")
     else:
-        nueva_carrera = c.carrera(nombre,"",nota_corte,duracion)
-        dao.añadir_carrera(cursor, nueva_carrera.getter(),nueva_carrera.get_nota_corte(),nueva_carrera.get_duracion())
-        print(f"\nla carrera {NEGRITA}{nombre}{RESET} se ha añadido.\n")
+        print(f"\n❌ Error al añadir la carrera: {response.text}\n")
+
     pausa()
+
 
 def actualizar_carrera(cursor):
     id_carrera = input("Introduce el ID de la carrera a actualizar: ")
